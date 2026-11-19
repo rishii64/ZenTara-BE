@@ -3,8 +3,8 @@ const router = express.Router();
 const { db } = require('../db/database');
 const { authenticateToken, requireRole } = require('../middleware/auth');
 
-// GET /api/settings - get all store settings
-router.get('/', authenticateToken, async (req, res) => {
+// GET /api/settings - get all store settings (Public store profile & branding)
+router.get('/', async (req, res) => {
   try {
     const rows = await db.query('SELECT key, value FROM store_settings');
     const settings = {};
