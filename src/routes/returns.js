@@ -439,7 +439,10 @@ router.post('/', authenticateToken, requireRole('Cashier', 'Store Manager', 'Adm
 
     res.status(201).json({
       message: `${type === 'exchange' ? 'Exchange' : 'Return'} processed successfully.`,
-      return: transactionResult
+      return: transactionResult,
+      return_number: transactionResult.return_number,
+      type: transactionResult.type,
+      ...transactionResult
     });
   } catch (err) {
     console.error('Error processing return:', err);

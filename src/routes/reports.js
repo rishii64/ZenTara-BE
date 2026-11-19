@@ -54,13 +54,18 @@ router.get('/dashboard', authenticateToken, async (req, res) => {
         s.id,
         s.invoice_number,
         s.customer_name,
+        s.customer_phone,
         s.rounded_amount,
+        s.rounded_amount as net_amount,
+        s.total_amount,
         s.payment_method,
+        s.payment_method as payment_mode,
+        s.status,
         s.created_at,
-        u.full_name as cashier_name
+        u.full_name as cashier_name,
+        COALESCE((SELECT SUM(quantity) FROM sale_items si WHERE si.sale_id = s.id), (SELECT COUNT(*) FROM sale_items si WHERE si.sale_id = s.id), 1) as item_count
       FROM sales s
       JOIN users u ON u.id = s.cashier_id
-      WHERE s.status = 'completed'
       ORDER BY s.id DESC
       LIMIT 6
     `);
